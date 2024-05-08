@@ -115,7 +115,7 @@ This should prompt the compiler to load `inner.first` before the assignment, rig
 By escaping we mean the address of an item leave the scope. So you might say that a simple function would do the job:
 
 ```c
-void __attribute__((noinline)) nop(void volatile *ptr)
+void __attribute__((noinline)) nop(volatile void *ptr)
 {
     return;
 }
