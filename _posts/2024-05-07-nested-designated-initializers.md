@@ -16,7 +16,7 @@ struct TCB *ctrl_block = malloc(sizeof(struct TCB));
 	.send = {
 		.iss = A_RANDOM_NUMBER,
 		.una = 0,
-		.nxt = ctrl_block->send.iss + 1, // <==== DANGER! DANGER!
+		.nxt = ctrl_block->send.iss + 1, // <== DANGER! DANGER!
         ...
 	},
   ...
@@ -35,7 +35,7 @@ int bar()
 {
 	struct foo instance = {
 		.first = 20,
-		.second = instance.first << 2, // <=== is this OK?
+		.second = instance.first << 2, // <== is this OK?
 	};
 
 	return instance.second;
@@ -109,7 +109,7 @@ struct inner_foo {
 	int second;
 };
 ```
-This should prompt the compiler to load `inner.first` before the assignment, right? It turns out this is not the case. To understand why just inserting `volatile` before 'inner.first' does not deceive the compiler, we must first understand how `volatile` works in this context. Remember this tip:
+This should prompt the compiler to load `inner.first` before the assignment, right? It turns out this is not the case. To understand why just inserting `volatile` before `inner.first` does not deceive the compiler, we must first understand how `volatile` works in this context. Remember this tip:
 
 > Any object that is guaranteed to be local given [TBAA](https://gcc.gnu.org/onlinedocs/gccint/Alias-analysis.html) and escape analysis is subject to whatever the compiler chooses, but if aliases or pointers to these objects escape, volatile actually applies.
 {: .prompt-tip}
