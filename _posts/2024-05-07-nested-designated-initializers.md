@@ -4,8 +4,6 @@ categories: [compilers]
 tags: [c, undefined-behavior, designated-initializers, volatile, language-lawyer]
 ---
 
-## Introduction
-
 I was playing with my [TCP stack](https://github.com/ImanSeyed/tcp-tun) and wondered what would happen if I initialized my TCB struct with nested designated initializers and some strange tricks, which led to a tragedy.
 
 ```c
