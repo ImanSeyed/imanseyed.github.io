@@ -98,5 +98,5 @@ err = btmtk_usb_submit_wmt_recv_urb(hdev);
 The driver then waits for confirmation from the device that the chunk was received and processed correctly before continuing to the next chunk. 
 ### Further Reading
 - [Firmware Documentation in the Linux Kernel](https://www.kernel.org/doc/html/latest/driver-api/firmware/index.html)
-- [Gentoo Wiki - Linux Firmware](https://wiki.gentoo.org/wiki/Linux_firmware)
 - [Linux-libre Project](https://www.fsfla.org/ikiwiki/selibre/linux-libre)
+- [Gentoo Wiki - Linux Firmware](https://wiki.gentoo.org/wiki/Linux_firmware)
