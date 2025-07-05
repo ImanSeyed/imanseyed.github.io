@@ -1,7 +1,7 @@
 ---
-title: "Do You REALLY Know inotify?"
+title: "inotify Internals"
 categories: [linux-kernel]
-tags: [inotify, fs]
+tags: [inotify, fs, internals]
 ---
 
 ## General Overview

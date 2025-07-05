@@ -60,7 +60,8 @@ During early boot, kernel calls two functions to load the blobs:
 1. [`wait_for_initramfs()`](https://elixir.bootlin.com/linux/v6.15.4/source/init/initramfs.c#L764)
 2. [`kernel_read_file_from_path_initns()`](https://elixir.bootlin.com/linux/v6.15.4/source/fs/kernel_read_file.c#L147)
 This means it reads the firmware **from the init process's filesystem view** (typically the *initramfs*). Initramfs is the temporary root filesystem loaded during early boot before the real root filesystem is mounted. So unless you build the firmware into the kernel image (`CONFIG_EXTRA_FIRMWARE`), **it has to be available in the initramfs**.
->Compressed blobs don't work with `CONFIG_EXTRA_FIRMWARE`. For built-in drivers (like CPU microcode), firmware **must be uncompressed**. **MT7922** is also one of those drivers.  
+
+>Compressed blobs don't work with `CONFIG_EXTRA_FIRMWARE`. For built-in drivers (like CPU microcode), firmware **must be uncompressed**. **MT7922** is also one of those drivers.
 {: .prompt-warning }
 
 Later, if the module loads after userspace is up, tools like `udev` can supply the firmware via `/sys/class/firmware`.
