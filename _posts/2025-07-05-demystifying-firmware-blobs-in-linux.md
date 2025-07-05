@@ -62,7 +62,7 @@ During early boot, kernel calls two functions to load the blobs:
 
 This means it reads the firmware **from the init process's filesystem view** (typically the *initramfs*). Initramfs is the temporary root filesystem loaded during early boot before the real root filesystem is mounted. So unless you build the firmware into the kernel image (`CONFIG_EXTRA_FIRMWARE`), **it has to be available in the initramfs**.
 
->Compressed blobs don't work with `CONFIG_EXTRA_FIRMWARE`. For built-in drivers (like CPU microcode), firmware **must be uncompressed**. **MT7922** is also one of those drivers.
+>Compressed blobs don't work with `CONFIG_EXTRA_FIRMWARE`. For built-in drivers (like CPU microcode), firmware **must be uncompressed**. `btmtk` is also one of those drivers. If you want to use compression and the firmware blob is required for the device functionalities, you need to build the driver as a module; it can't be built-in.
 {: .prompt-warning }
 
 Later, if the module loads after userspace is up, tools like `udev` can supply the firmware via `/sys/class/firmware`.
@@ -93,7 +93,7 @@ err = __hci_cmd_send(hdev, 0xfc6f, hlen, wc);
 ```
 `wc` is the WMT command buffer that includes the firmware chunk.
 
-After sending, the driver subits a USB URB to wait for the chip's response:
+After sending, the driver submits a USB URB to wait for the chip's response:
 ```c
 err = btmtk_usb_submit_wmt_recv_urb(hdev);
 ```
