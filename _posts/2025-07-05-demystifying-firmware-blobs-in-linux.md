@@ -6,8 +6,8 @@ tags: [firmware, internals]
 
 Most Linux systems rely on binary blobs to activate the full capabilities of hardware like Bluetooth and Wi-Fi chips. But what are these blobs, and how does the kernel load them?
 ### Understanding Firmware Blobs
-The Linux kernel supports loading files (blobs) from userspace to enable specific hardware functionalities. These files may include **CPU microcode**, **firmware for device microcontrollers**, or **auxiliary data used by drivers**. Some of this data is optional, and only used to add additional features of the target device.
->The main idea is to load the blob in the kernel and upload it to the target device (like a Bluetooth chip from MediaTek, for example). We'll dive into this later, but for now, let's move on.
+The Linux kernel supports loading files (blobs) from userspace to enable specific hardware functionalities. These files may include **CPU microcode**, **firmware for device microcontrollers**, or **auxiliary data used by drivers**. Some of this data is optional, and only used to support additional features on the target device.
+>The main idea is to load the blob in the kernel and send it to the target device. We'll dive into this later, but for now, let's move on.
 {: .prompt-tip }
 
 You can find the blobs provided by vendors [here](https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree). Usually this repository (or one of its mirrors) is the upstream source for `linux-firmware` package in distributions, unless the distribution decides to compress each blob to reduce size.
@@ -32,7 +32,7 @@ echo $CUSTOMIZED_PATH | sudo tee /sys/module/firmware_class/parameters/path
 ### Firmware Loading Flow in the Linux Kernel
 The firmware loader of the kernel is pretty straightforward. I'm going to use the source code of [`btmtk`](https://elixir.bootlin.com/linux/v6.15.4/source/drivers/bluetooth/btmtk.c) driver as an example.
 #### Requesting the Firmware
-The MediaTek **MT7922** Bluetooth chip needs several firmware blobs, like this one:
+The MediaTek **MT7922** Bluetooth chip must load several firmware blobs to work properly. One of these blobs is this one:
 ```
 mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin.zst
 ```
@@ -40,7 +40,7 @@ The driver loads it using [`request_firmware()`](https://elixir.bootlin.com/linu
 ```c
 err = request_firmware(&fw, fwname, &hdev->dev);
 ```
-Even though the file is compressed (`.zst`), you just pass the base name (`.bin`). The kernel tries known suffixes like `.zst` or `.xz` if compression support is enabled by setting `CONFIG_FW_LOADER_COMPRESS_<ZSTD OR XZ>`:
+Even though the file is compressed (`.zst`), `fwname` is just the base name (`<FIRMWARE>.bin`). The kernel tries known suffixes like `.zst` or `.xz` if compression support is enabled by setting `CONFIG_FW_LOADER_COMPRESS_<ZSTD OR XZ>`:
 ```c
 _request_firmware() {
 	// ...
@@ -62,7 +62,7 @@ During early boot, kernel calls two functions to load the blobs:
 
 This means it reads the firmware **from the init process's filesystem view** (typically the *initramfs*). Initramfs is the temporary root filesystem loaded during early boot before the real root filesystem is mounted. So unless you build the firmware into the kernel image (`CONFIG_EXTRA_FIRMWARE`), **it has to be available in the initramfs**.
 
->Compressed blobs don't work with `CONFIG_EXTRA_FIRMWARE`. For built-in drivers (like CPU microcode), firmware **must be uncompressed**. `btmtk` is also one of those drivers. If you want to use compression and the firmware blob is required for the device functionalities, you need to build the driver as a module; it can't be built-in.
+>Compressed firmware support does not apply to firmware images that are built into the kernel image. If a driver is built-in and depends on firmware blobs, those blobs must either be uncompressed and built into the kernel image, or be included in the initramfs. Otherwise, the driver must be built as a module. 
 {: .prompt-warning }
 
 Later, if the module loads after userspace is up, tools like `udev` can supply the firmware via `/sys/class/firmware`.
