@@ -16,10 +16,10 @@ timezone: America/Toronto
 
 title: Code Sorcery # the main title
 
-tagline: Exploring Linux Kernel Wizardry, Compiler Magic and System Programming. # it will display as the sub-title
+tagline: Exploring Linux Kernel, Compiler and System Programming. # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  Exploring Linux Kernel Wizardry, Compiler Magic and System Programming.
+  Exploring Linux Kernel, Compiler and System Programming.
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
