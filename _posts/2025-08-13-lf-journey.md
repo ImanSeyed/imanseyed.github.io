@@ -1,7 +1,7 @@
 ---
 title: "My Linux Kernel Development Journey: From First Patch to Race Condition Hell"
 categories: [linux-kernel]
-tags: []
+tags: [off-topice]
 ---
 
 Over the course of several months in early 2025, I contributed multiple patches to the Linux kernel mainline, focusing primarily on concurrency issues, string safety improvements, and hardware-specific driver fixes. This work involved identifying and resolving deadlocks in CPU frequency management, fixing argument parsing problems in a kbuild script, and investigating complex race conditions reported by Syzbot.
