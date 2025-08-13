@@ -201,17 +201,41 @@ One of the most challenging bugs I investigated was [Syzbot report extid+1a281a4
 
 For learning about the fundamental concepts behind race conditions, deadlocks, and concurrent programming in systems code, I highly recommend [*Is Parallel Programming Hard, And, If So, What Can You Do About It?*](https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.html) by Paul McKenney. This book is freely available and covers everything from basic synchronization primitives to advanced lock-free programming techniques used in the kernel.
 
-## Hardware-Specific Contributions
+## Community Collaboration
 
-### Community Collaboration
+### Understanding Multi-Contributor Patches
 
 ```bash
 2b9f84e7dc86 platform/x86: thinkpad_acpi: disable ACPI fan access for T495* and E560
 ```
 
-Sometimes kernel development is about community collaboration rather than solo debugging. When a friend reported fan control issues on his ThinkPad, I found an existing solution on [Bugzilla](https://bugzilla.kernel.org/show_bug.cgi?id=219643) that needed proper formatting and additional hardware coverage.
+Sometimes you might have to carry a patch on behalf of someone else. The patch mentioned above is an example. The problem involved ThinkPad laptops where ACPI fan control methods (`FANG+FANW`) existed in the DSDT table but didn't actually function, causing "No such device or address" errors. A previous commit (57d0557dfa49) added support for newer ACPI fan control methods, but certain laptop models (T495, T495s, E560) have these methods in their firmware without proper implementation. The solution required disabling the broken ACPI methods and falling back to legacy fan control.
 
-This demonstrates another entry point for kernel contributions: taking existing community solutions and helping them reach mainline quality.
+his patch involved:
+- **Reported-by**: Vlastimil Holer (original bug reporter)
+- **Main author**: Eduard Christian Dumitrescu (primary patch developer)
+- **Co-developed-by**: Myself (contributed additional laptop models and refinements)
+- **Tested-by**: Alireza Elikahi (verified the fix worked)
+- **Reviewed-by**: Kurt Borja and Ilpo Järvinen (code review)
+
+### Proper Patch Attribution
+
+The kernel uses specific tags to credit contributions properly, as detailed in the [patch formatting documentation](https://docs.kernel.org/process/5.Posting.html#patch-formatting-and-changelogs):
+
+```
+Reported-by: Person who found the bug
+Fixes: commit-hash ("commit title") - Links to the commit that introduced the issue
+Tested-by: Person who verified the fix works
+Reviewed-by: Person who performed code review
+Co-developed-by: Significant contributor to the patch
+Signed-off-by: Legal certification that you can contribute this code
+```
+
+This attribution system ensures proper credit while creating a clear audit trail of who was involved in identifying, developing, testing, and reviewing each change.
+
+Complex patches often build on existing community work. In this case, Eduard had already developed a solution but needed help with adding additional affected laptop models, proper patch formatting for submission and ensuring the fix was comprehensive.
+
+Using `Co-developed-by` acknowledges collaborative development while maintaining clear authorship. Kernel development isn't just about writing code... it's about participating in a community process.
 
 ## Final Notes
 
