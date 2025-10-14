@@ -157,7 +157,7 @@ $ ls $SupportPackageRoot/3P.instrset/arduinoide.instrset/aCLI/
 arduino-cli  arduino-cli.yaml  data  LICENSE.txt  user
 ```
 
-``arduino-cli` is the tool that compiles the sketch (using `gcc-avr` on my system) and uploads it. To verify this, watch the `arduino-cli` executable, upload a sketch from somewhere other than MATLAB, then return to MATLAB and run your script. You should see this on the Command Window:
+`arduino-cli` is the tool that compiles the sketch (using `gcc-avr` on my system) and uploads it. To verify this, watch the `arduino-cli` executable, upload a sketch from somewhere other than MATLAB, then return to MATLAB and run your script. You should see this on the Command Window:
 
 ```
 Updating server code on board Uno (/dev/ttyUSB0). This may take a few minutes.
