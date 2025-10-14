@@ -128,7 +128,7 @@ target/
     rtiostream_serial_*.cpp  % serial/BLE/Wi-Fi backends
 ```
 
-These use the usual Arduino core API ([Wiring framework](https://wiring.org.co/reference/)) like `pinMode` and `digitalWrite` internally.
+These use the usual [Arduino core API](https://github.com/arduino/ArduinoCore-avr/tree/855ea0100ba0f6b9036a19a6e71517125473b014/cores/arduino); like `pinMode` and `digitalWrite` internally.
 
 ### How it gets uploaded
 
